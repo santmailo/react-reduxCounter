@@ -1,18 +1,61 @@
-import {createStore} from "redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-function counterReducer(currState={count: 0}, action) {
-  let state = currState;
 
-  if(action.type=='INCREMENT'){
-    state = {count: currState.count+1}  
+const counterSlice = createSlice({
+  name: "counter", 
+  initialState : {
+    counterVal : 0
+  }, 
+  reducers: {
+    increment: (state)=> {
+      state.counterVal++;
+    }, 
+    
+    decrement: (state) => {
+      state.counterVal--      
+    }, 
+    
+    add: (state, action) => {
+      state.counterVal+=action.payload.num      
+    },
+    
+    subtract: (state, action) => {
+      state.counterVal-=action.payload.num
+    },
+
   }
-  
-  else if(action.type=='DECREMENT'){
-    state = {count: currState.count-1}  
-  }
-  return state;
-}
 
-const counterStore = createStore(counterReducer);
+})
+
+
+
+const counterStore = configureStore({reducer: {
+  counter: counterSlice.reducer
+}});
+
+
+export const counterAction = counterSlice.actions; 
 
 export default counterStore;
+
+
+// function counterReducer(currState = { count: 0 }, action) {
+//   let state = currState;
+
+//   if (action.type == 'INCREMENT') {
+//     state = { count: currState.count + 1 }
+//   }
+
+//   else if (action.type == 'DECREMENT') {
+//     state = { count: currState.count - 1 }
+//   }
+
+//   else if (action.type == "ADD") {
+//     state = { count: currState.count + action.payload.num }
+//   }
+
+//   else if (action.type == "SUBTRACT") {
+//     state = { count: currState.count - action.payload.num }
+//   }
+//   return state;
+// }
